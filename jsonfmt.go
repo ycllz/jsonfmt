@@ -53,7 +53,7 @@ func main() {
 		}
 
 		var buf bytes.Buffer
-		if err = json.Indent(&buf, jsonData, "", "\t"); err != nil {
+		if err = json.Indent(&buf, jsonData, "", "    "); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return
 		}
