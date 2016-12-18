@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 		},
 	}
 
-	app.Action = func(ctx *cli.Context) {
+	app.Action = func(ctx *cli.Context) error {
 		var writer io.Writer
 		var jsonData []byte
 		var err error
@@ -43,19 +43,19 @@ func main() {
 		if len(input) == 0 {
 			if jsonData, err = ioutil.ReadAll(os.Stdin); err != nil {
 				fmt.Fprintln(os.Stderr, err)
-				return
+				return err
 			}
 		} else {
 			if jsonData, err = ioutil.ReadFile(input); err != nil {
 				fmt.Fprintln(os.Stderr, err)
-				return
+				return err
 			}
 		}
 
 		var buf bytes.Buffer
 		if err = json.Indent(&buf, jsonData, "", "    "); err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			return
+			return err
 		}
 
 		output := ctx.String("output")
@@ -65,7 +65,7 @@ func main() {
 			var f *os.File
 			if f, err = os.Create(output); err != nil {
 				fmt.Fprintln(os.Stderr, err)
-				return
+				return err
 			}
 			defer f.Close()
 			writer = f
@@ -73,8 +73,10 @@ func main() {
 
 		if _, err = buf.WriteTo(writer); err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			return
+			return err
 		}
+
+		return nil
 	}
 
 	if err := app.Run(os.Args); err != nil {
