@@ -16,7 +16,7 @@ func main() {
 	app.Name = "jsonfmt"
 	app.Usage = "Beautify json string data."
 	app.UsageText = "jsonfmt [global options] [arg]"
-	app.Version = "v0.0.1"
+	app.Version = fmt.Sprintf("jsonfmt version v0.0.1\ndate: %s\ncommit: %s", Date, Commit)
 	app.Authors = []cli.Author{
 		cli.Author{Name: "voidnt",
 			Email: "voidint@126.com",
