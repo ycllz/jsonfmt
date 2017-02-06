@@ -40,13 +40,15 @@ func main() {
 		var err error
 
 		input := ctx.String("input")
-		if len(input) == 0 {
-			if jsonData, err = ioutil.ReadAll(os.Stdin); err != nil {
+		if input != "" {
+			if jsonData, err = ioutil.ReadFile(input); err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				return err
 			}
+		} else if ctx.NArg() > 0 {
+			jsonData = ([]byte)(ctx.Args().First())
 		} else {
-			if jsonData, err = ioutil.ReadFile(input); err != nil {
+			if jsonData, err = ioutil.ReadAll(os.Stdin); err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				return err
 			}
