@@ -59,6 +59,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			return err
 		}
+		buf.WriteByte('\n')
 
 		output := ctx.String("output")
 		if len(output) == 0 {
